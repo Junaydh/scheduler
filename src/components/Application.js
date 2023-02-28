@@ -9,20 +9,24 @@ export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}});
+    appointments: {},
+    interviewers: {}
+  });
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const setDay = day => setState({ ...state, day });
   const appointmentsArr = Object.values(dailyAppointments).map(appointment => {
+    const interview = getInterview(state, appointment.interview);
     return (
-      <Appointment key={appointment.id} {...appointment} />
+      <Appointment key={appointment.id} interview={interview} {...appointment}/>
     )
   }) 
   useEffect(() => {
     Promise.all([
       Axios.get('/api/days'),
-      Axios.get('/api/appointments')
+      Axios.get('/api/appointments'),
+      Axios.get('/api/interviewers')
     ]).then(all => {
-      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data}))
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}))
     })
   }, []);
   return (
