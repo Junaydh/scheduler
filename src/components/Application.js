@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from 'axios';
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
