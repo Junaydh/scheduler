@@ -12,16 +12,17 @@ export default function Application(props) {
     appointments: {}});
   const dailyAppointments = [];
   const setDay = day => setState({ ...state, day });
-  const setDays = days => setState(prev => ({ ...prev, days }));
   const appointmentsArr = Object.values(dailyAppointments).map(appointment => {
     return (
       <Appointment key={appointment.id} {...appointment} />
     )
   }) 
   useEffect(() => {
-    Axios.get('/api/days')
-    .then(res => {
-      setDays(res.data);
+    Promise.all([
+      Axios.get('/api/days'),
+      Axios.get('/api/appointments')
+    ]).then(all => {
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data}))
     })
   }, []);
   return (
