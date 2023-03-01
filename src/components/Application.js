@@ -35,7 +35,7 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    return Axios.put(`/api/appointments/${id}`, {interview: null})
+    return Axios.delete(`/api/appointments/${id}`)
     .then(() => {
       setState({...state, appointments})
     })
