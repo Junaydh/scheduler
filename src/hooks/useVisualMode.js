@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useVisualMode(mode) {
+export function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
 
   return {
