@@ -26,13 +26,27 @@ export default function Application(props) {
       setState({...state, appointments})
     })
   }
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return Axios.put(`/api/appointments/${id}`, {interview: null})
+    .then(() => {
+      setState({...state, appointments})
+    })
+  }
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const setDay = day => setState({ ...state, day });
   const interviewers = getInterviewersForDay(state, state.day);
   const appointmentsArr = Object.values(dailyAppointments).map(appointment => {
     const interview = getInterview(state, appointment.interview);
     return (
-      <Appointment {...appointment} key={appointment.id} interview={interview}  interviewers={interviewers} bookInterview={bookInterview}/>
+      <Appointment {...appointment} key={appointment.id} interview={interview}  interviewers={interviewers} bookInterview={bookInterview} cancelInterview={cancelInterview}/>
     )
   }) 
   useEffect(() => {
