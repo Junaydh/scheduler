@@ -6,7 +6,7 @@ import Appointment from "components/Appointment";
 import useApplicationData from "hooks/useApplicationData";
 
 export default function Application(props) {
-  const { state, setDay, bookInterview, cancelInterview } = useApplicationData();
+  const { state, setDay, bookInterview, cancelInterview, editInterview } = useApplicationData();
 
   const interviewers = getInterviewersForDay(state, state.day);
 
@@ -18,6 +18,7 @@ export default function Application(props) {
       interview={getInterview(state, appointment.interview)}  
       interviewers={interviewers} bookInterview={bookInterview} 
       cancelInterview={cancelInterview}
+      editInterview={editInterview}
       />
     );
   }); 
