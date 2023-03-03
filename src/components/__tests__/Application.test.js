@@ -1,8 +1,10 @@
 import React from "react";
 
-import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getByAltText, getByPlaceholderText, waitForElementToBeRemoved, queryByText, getAllByTestId, getByDisplayValue} from "@testing-library/react";
+import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getByAltText, getByPlaceholderText, waitForElementToBeRemoved, queryByText, getAllByTestId, getByDisplayValue, getByRole} from "@testing-library/react";
 
 import Application from "components/Application";
+
+import axios from "axios";
 
 afterEach(cleanup);
 
@@ -88,8 +90,6 @@ it("loads data, edits an interview and keeps the spots remaining for Monday the 
 
   const appointment = appointments[1];
 
-  debug();
-
   // 3. click on edit button
   fireEvent.click(getByAltText(appointment, "Edit"));
 
@@ -117,3 +117,34 @@ it("loads data, edits an interview and keeps the spots remaining for Monday the 
 
   expect(getByText(day, /1 spot remaining/i)).toBeInTheDocument();
 })
+
+it("shows the save error when failing to save an appointment", async () => {
+  // 1. make mock axios put reject when called
+  axios.put.mockRejectedValueOnce();
+
+  const {container, debug} = render(<Application />);
+
+  await waitForElement(() => getByText(container, "Archie Cohen"));
+
+  const appointments = getAllByTestId(container, "appointment");
+
+  const appointment = appointments[0];
+
+  // 2. enter name, choose interviewer and click save button
+  fireEvent.click(getByAltText(appointment, "Add"));
+  fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {target: {value: "Joe Mama"}})
+  fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+  fireEvent.click(getByText(appointment, /save/i));
+
+  // 3. wait for status element to be removed
+  await waitForElementToBeRemoved(() => getByText(appointment, /saving/i))
+
+  // 4. check to see if save error is displayed
+  expect(getByText(appointment, /could not save appointment/i)).toBeInTheDocument();
+
+  // 5. click close button on error element
+  fireEvent.click(getByAltText(appointment, "Close"));
+
+  // 6. check that appointment reverts to form view
+  expect(getByRole(appointment, "form")).toBeInTheDocument();
+});
