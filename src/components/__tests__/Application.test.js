@@ -145,6 +145,35 @@ it("shows the save error when failing to save an appointment", async () => {
   // 5. click close button on error element
   fireEvent.click(getByAltText(appointment, "Close"));
 
-  // 6. check that appointment reverts to form view
+  // 6. check that appointment exits error message and displays form element
   expect(getByRole(appointment, "form")).toBeInTheDocument();
 });
+
+it("shows the delete error when failing to delete an existing appointment", async () => {
+  // 1. make mock axios delete reject when called
+  axios.delete.mockRejectedValueOnce();
+
+  const {container, debug} = render(<Application />);
+
+  await waitForElement(() => getByText(container, "Archie Cohen"));
+
+  const appointments = getAllByTestId(container, "appointment");
+
+  const appointment = appointments[1];
+
+  // 2. click delete button and confirm
+  fireEvent.click(getByAltText(appointment, "Delete"));
+  fireEvent.click(getByText(appointment, "Confirm"));
+
+  // 3. wait for status element to be removed
+  await waitForElementToBeRemoved(() => getByText(appointment, /deleting/i));
+
+  // 4. check if delete error is displayed
+  expect(getByText(appointment, /could not delete appointment/i)).toBeInTheDocument();
+
+  // 5. click close button on error element
+  fireEvent.click(getByAltText(appointment, "Close"));
+
+  // 6. check that appointment exits error message and displays original appointment
+  expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
+})
