@@ -4,12 +4,14 @@
   "private": true,
   "proxy": "http://localhost:8001",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^1.6.2",
+    "babel-eslint": "^10.1.0",
     "classnames": "^2.2.6",
     "normalize.css": "^8.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-scripts": "3.4.4"
+    "react-scripts": "^5.0.1",
+    "webpack": "^4.42.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,11 +36,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
-    "@storybook/addon-actions": "^5.0.10",
-    "@storybook/addon-backgrounds": "^5.0.10",
+    "@storybook/addon-actions": "^7.6.1",
+    "@storybook/addon-backgrounds": "^7.6.1",
     "@storybook/addon-links": "^5.0.10",
     "@storybook/addons": "^5.0.10",
-    "@storybook/react": "^5.0.10",
+    "@storybook/react": "^7.6.1",
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.7",
     "@testing-library/react-hooks": "^8.0.1",
