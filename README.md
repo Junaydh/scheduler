@@ -5,7 +5,7 @@ A clean and simple, one page React app that allows students to create, edit, and
 ## Setup
 
 1. Install dependencies with `npm install`
-2. Clone the [api server](https://github.com/lighthouse-labs/scheduler-api) and follow the setup instructions there
+2. Clone the [api server](https://github.com/junaydh/scheduler-api) and follow the setup instructions there
 
 ## Running Webpack Development Server
 Start the server with
